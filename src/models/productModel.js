@@ -1,7 +1,6 @@
 import mongoose, { Types } from "mongoose";
 const { ObjectId } = Types;
 import { convertToSlug } from "../utils/convertToSlug";
-import CateProduct from "./cateProductModel";
 
 const productSchema = new mongoose.Schema(
   {
@@ -12,6 +11,10 @@ const productSchema = new mongoose.Schema(
     },
     image: {
       type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
       required: true,
     },
     description: String,
