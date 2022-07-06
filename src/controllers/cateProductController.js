@@ -6,7 +6,7 @@ export const getAll = async (req, res) => {
 
     res.json({
       status: true,
-      data: {
+      payload: {
         categories,
       },
     });
@@ -26,7 +26,7 @@ export const get = async (req, res) => {
 
     res.json({
       status: true,
-      data: {
+      payload: {
         category,
       },
     });
@@ -44,7 +44,7 @@ export const add = async (req, res) => {
 
     res.status(201).json({
       status: true,
-      data: {
+      payload: {
         category,
       },
     });
@@ -64,7 +64,7 @@ export const update = async (req, res) => {
 
     res.json({
       status: true,
-      data: {
+      payload: {
         category,
       },
     });
@@ -83,7 +83,7 @@ export const remove = async (req, res) => {
 
     res.json({
       status: true,
-      data: {
+      payload: {
         category,
       },
     });
