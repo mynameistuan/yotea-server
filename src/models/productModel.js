@@ -1,6 +1,7 @@
 import mongoose, { Types } from "mongoose";
 const { ObjectId } = Types;
 import { convertToSlug } from "../utils/convertToSlug";
+import CateProduct from "./cateProductModel";
 
 const productSchema = new mongoose.Schema(
   {
@@ -28,7 +29,7 @@ const productSchema = new mongoose.Schema(
     },
     slug: String,
   },
-  { timestamps: true },
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
 
 productSchema.pre("save", function (next) {
@@ -41,6 +42,18 @@ productSchema.pre("findOneAndUpdate", function (next) {
   const dataUpdate = this.getUpdate();
 
   dataUpdate.slug = convertToSlug(dataUpdate.name);
+  next();
+});
+
+productSchema.virtual("category", {
+  ref: "CategoryProduct",
+  foreignField: "_id",
+  localField: "categoryId",
+  justOne: true,
+});
+
+productSchema.pre(/^find/, function (next) {
+  this.populate("category");
   next();
 });
 

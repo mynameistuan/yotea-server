@@ -22,7 +22,7 @@ export const get = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const category = await CateProduct.find({ _id: id }).exec();
+    const category = await CateProduct.findOne({ _id: id }).exec();
 
     res.json({
       status: true,

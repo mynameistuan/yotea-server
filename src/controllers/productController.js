@@ -21,7 +21,7 @@ export const getAll = async (req, res) => {
 export const get = async (req, res) => {
   try {
     const { id } = req.params;
-    const product = await Product.find({ _id: id }).exec();
+    const product = await Product.findOne({ _id: id }).exec();
 
     res.json({
       status: true,
