@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
-import slugify from "slugify";
-import { convertToSlug } from "../../utils/convertToSlug";
+import { convertToSlug } from "../utils/convertToSlug";
 
 const categorySchema = new mongoose.Schema(
   {
