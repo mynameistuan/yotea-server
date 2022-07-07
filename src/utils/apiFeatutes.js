@@ -16,7 +16,7 @@ export class APIFeatutes {
 
     // 2. Advanced filter (price[lte]=)
     let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|lte|gt|lt)\b/g, (match) => `$${match}`);
+    queryStr = queryStr.replace(/\b(gte|lte|gt|lt|ne)\b/g, (match) => `$${match}`);
 
     this.query = this.query.find(JSON.parse(queryStr));
     return this;

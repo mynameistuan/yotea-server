@@ -14,8 +14,9 @@ const categorySchema = new mongoose.Schema(
     },
     slug: String,
   },
-  { timestamps: true },
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
+categorySchema.index({ "$**": "text" });
 
 categorySchema.pre("save", function (next) {
   this.slug = convertToSlug(this.name);
