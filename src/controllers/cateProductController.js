@@ -1,13 +1,20 @@
 import CateProduct from "../models/cateProductModel";
+import { APIFeatutes } from "../utils/apiFeatutes";
 
 export const getAll = async (req, res) => {
   try {
-    const categories = await CateProduct.find().exec();
+    const features = await new APIFeatutes(CateProduct, req.query).filter().sort().limitFields().paginate();
+
+    const categories = await features.query;
 
     res.json({
       status: true,
       payload: {
         categories,
+        total: features.total,
+        totalPage: Math.ceil(features.total / features.limit),
+        currentPage: features.page,
+        perPage: features.limit,
       },
     });
   } catch (error) {

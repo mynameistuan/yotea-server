@@ -34,6 +34,7 @@ const productSchema = new mongoose.Schema(
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
+productSchema.index({ "$**": "text" });
 
 productSchema.pre("save", function (next) {
   this.slug = convertToSlug(this.name);
