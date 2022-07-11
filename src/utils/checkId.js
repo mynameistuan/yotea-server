@@ -9,8 +9,9 @@ import Size from "../models/sizeModel";
 import Slider from "../models/sliderModel";
 import Topping from "../models/toppingModel";
 import User from "../models/userModel";
+import Voucher from "../models/voucherModel";
 
-const modelList = [Product, CateProduct, CatePost, Post, Size, Slider, Topping, User, Address, Favorite];
+const modelList = [Product, CateProduct, CatePost, Post, Size, Slider, Topping, User, Address, Favorite, Voucher];
 
 export const checkIdExits = async (req, res, next, id) => {
   // check id valid
