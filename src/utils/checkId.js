@@ -3,8 +3,9 @@ import CatePost from "../models/catePostModel";
 import CateProduct from "../models/cateProductModel";
 import Post from "../models/postModel";
 import Product from "../models/productModel";
+import Size from "../models/sizeModel";
 
-const modelList = [Product, CateProduct, CatePost, Post];
+const modelList = [Product, CateProduct, CatePost, Post, Size];
 
 export const checkIdExits = async (req, res, next, id) => {
   // check id valid
