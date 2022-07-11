@@ -46,7 +46,7 @@ export const getAll = async (req, res) => {
 export const get = async (req, res) => {
   try {
     const { id: _id } = req.params;
-    const category = await CatePost.find({ _id }).exec();
+    const category = await CatePost.findOne({ _id }).exec();
 
     res.json({
       status: true,
