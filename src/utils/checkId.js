@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
+import CatePost from "../models/catePostModel";
 import CateProduct from "../models/cateProductModel";
 import Product from "../models/productModel";
 
-const modelList = [Product, CateProduct];
+const modelList = [Product, CateProduct, CatePost];
 
 export const checkIdExits = async (req, res, next, id) => {
   // check id valid
