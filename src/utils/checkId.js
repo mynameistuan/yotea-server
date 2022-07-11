@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import Address from "../models/addressModel";
 import CatePost from "../models/catePostModel";
 import CateProduct from "../models/cateProductModel";
+import Favorite from "../models/favoriteModel";
 import Post from "../models/postModel";
 import Product from "../models/productModel";
 import Size from "../models/sizeModel";
@@ -9,7 +10,7 @@ import Slider from "../models/sliderModel";
 import Topping from "../models/toppingModel";
 import User from "../models/userModel";
 
-const modelList = [Product, CateProduct, CatePost, Post, Size, Slider, Topping, User, Address];
+const modelList = [Product, CateProduct, CatePost, Post, Size, Slider, Topping, User, Address, Favorite];
 
 export const checkIdExits = async (req, res, next, id) => {
   // check id valid
