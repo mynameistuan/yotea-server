@@ -14,6 +14,7 @@ import User from "../models/userModel";
 import Voucher from "../models/voucherModel";
 import OrderLog from "../models/orderLogModel";
 import Store from "../models/storeModel";
+import Feedback from "../models/feedbackModel";
 
 const modelList = [
   Product,
@@ -31,6 +32,7 @@ const modelList = [
   OrderDetail,
   OrderLog,
   Store,
+  Feedback,
 ];
 
 export const checkIdExits = async (req, res, next, id) => {
