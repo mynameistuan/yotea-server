@@ -13,6 +13,7 @@ import Topping from "../models/toppingModel";
 import User from "../models/userModel";
 import Voucher from "../models/voucherModel";
 import OrderLog from "../models/orderLogModel";
+import Store from "../models/storeModel";
 
 const modelList = [
   Product,
@@ -29,6 +30,7 @@ const modelList = [
   Order,
   OrderDetail,
   OrderLog,
+  Store,
 ];
 
 export const checkIdExits = async (req, res, next, id) => {
