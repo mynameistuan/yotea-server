@@ -61,6 +61,24 @@ export const get = async (req, res) => {
   }
 };
 
+export const getDefault = async (req, res) => {
+  try {
+    const topping = await Topping.findOne({ price: 0 }).exec();
+
+    res.json({
+      status: true,
+      payload: {
+        topping,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: false,
+      message: error,
+    });
+  }
+};
+
 export const update = async (req, res) => {
   try {
     const { id } = req.params;
