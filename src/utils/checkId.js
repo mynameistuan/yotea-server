@@ -3,6 +3,8 @@ import Address from "../models/addressModel";
 import CatePost from "../models/catePostModel";
 import CateProduct from "../models/cateProductModel";
 import Favorite from "../models/favoriteModel";
+import Order from "../models/orderModel";
+import OrderDetail from "../models/orderDetailModel";
 import Post from "../models/postModel";
 import Product from "../models/productModel";
 import Size from "../models/sizeModel";
@@ -11,7 +13,21 @@ import Topping from "../models/toppingModel";
 import User from "../models/userModel";
 import Voucher from "../models/voucherModel";
 
-const modelList = [Product, CateProduct, CatePost, Post, Size, Slider, Topping, User, Address, Favorite, Voucher];
+const modelList = [
+  Product,
+  CateProduct,
+  CatePost,
+  Post,
+  Size,
+  Slider,
+  Topping,
+  User,
+  Address,
+  Favorite,
+  Voucher,
+  Order,
+  OrderDetail,
+];
 
 export const checkIdExits = async (req, res, next, id) => {
   // check id valid
