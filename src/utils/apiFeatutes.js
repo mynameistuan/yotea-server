@@ -49,7 +49,7 @@ export class APIFeatutes {
   async paginate() {
     // 5. Pagination
     this.page = +this.queryString.page || 1;
-    this.limit = +this.queryString.limit || 3;
+    this.limit = +this.queryString.limit || +process.env.LIMIT;
     const skip = (this.page - 1) * this.limit;
 
     const totalResult = await this.query.clone();
