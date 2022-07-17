@@ -37,7 +37,7 @@ const storeSchema = new mongoose.Schema(
     currentStore: {
       // địa chỉ hiển thị trên menu - footer
       type: Boolean,
-      required: true,
+      default: false,
     },
   },
   { timestamps: true },

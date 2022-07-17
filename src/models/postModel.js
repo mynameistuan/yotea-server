@@ -60,5 +60,10 @@ postSchema.pre(/^find/, function (next) {
   next();
 });
 
+postSchema.pre("save", function (next) {
+  this.populate("category");
+  next();
+});
+
 const Post = mongoose.model("Post", postSchema);
 export default Post;

@@ -73,6 +73,14 @@ export const get = async (req, res) => {
 export const update = async (req, res) => {
   try {
     const { id } = req.params;
+    // website chỉ có 1 địa chỉ trên header - footer
+    if (req.body.currentStore) {
+      return res.status(400).json({
+        status: false,
+        message: "Đã tồn tại địa chỉ",
+      });
+    }
+
     const store = await Store.findOneAndUpdate({ _id: id }, req.body, { new: true });
 
     res.json({

@@ -3,12 +3,12 @@ import { APIFeatutes } from "../utils/apiFeatutes";
 
 export const add = async (req, res) => {
   try {
-    const catePost = await new Size(req.body).save();
+    const size = await new Size(req.body).save();
 
     res.status(201).json({
       status: true,
       payload: {
-        size: catePost,
+        size,
       },
     });
   } catch (error) {
@@ -22,13 +22,12 @@ export const add = async (req, res) => {
 export const getAll = async (req, res) => {
   try {
     const features = await new APIFeatutes(Size, req.query).filter().sort().limitFields().paginate();
-
-    const categories = await features.query;
+    const sizes = await features.query;
 
     res.json({
       status: true,
       payload: {
-        categories,
+        sizes,
         total: features.total,
         totalPage: Math.ceil(features.total / features.limit),
         currentPage: features.page,
