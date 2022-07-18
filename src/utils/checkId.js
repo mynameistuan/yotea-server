@@ -15,6 +15,9 @@ import Voucher from "../models/voucherModel";
 import OrderLog from "../models/orderLogModel";
 import Store from "../models/storeModel";
 import Feedback from "../models/feedbackModel";
+import Province from "../models/provinceModel";
+import District from "../models/districtModel";
+import Ward from "../models/wardModel";
 
 const modelList = [
   Product,
@@ -33,6 +36,9 @@ const modelList = [
   OrderLog,
   Store,
   Feedback,
+  Province,
+  District,
+  Ward,
 ];
 
 export const checkIdExits = async (req, res, next, id) => {
