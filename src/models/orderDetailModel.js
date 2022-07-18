@@ -52,7 +52,7 @@ const orderDetailSchema = new mongoose.Schema(
 );
 
 orderDetailSchema.pre(/^find/, function (next) {
-  this.populate("product").populate("size").populate("topping");
+  this.populate("product").populate("size").populate("topping").populate("order");
 
   next();
 });
@@ -75,6 +75,13 @@ orderDetailSchema.virtual("topping", {
   ref: "Topping",
   foreignField: "_id",
   localField: "toppingId",
+  justOne: true,
+});
+
+orderDetailSchema.virtual("order", {
+  ref: "Order",
+  foreignField: "_id",
+  localField: "orderId",
   justOne: true,
 });
 

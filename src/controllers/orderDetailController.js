@@ -1,4 +1,5 @@
 import OrderDetail from "../models/orderDetailModel";
+import Order from "../models/orderModel";
 import { APIFeatutes } from "../utils/apiFeatutes";
 
 export const add = async (req, res) => {
@@ -51,6 +52,27 @@ export const get = async (req, res) => {
       status: true,
       payload: {
         orderDetail,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: false,
+      message: error,
+    });
+  }
+};
+
+export const getByOrder = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const orderDetail = await OrderDetail.find({ orderId }).exec();
+    const order = await Order.findOne({ _id: orderId }).exec();
+
+    res.json({
+      status: true,
+      payload: {
+        orderDetail,
+        order,
       },
     });
   } catch (error) {
