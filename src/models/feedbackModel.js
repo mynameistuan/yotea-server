@@ -24,7 +24,10 @@ const feedbackSchema = new mongoose.Schema(
       ref: "Store",
       required: true,
     },
-    reply: String,
+    reply: {
+      type: String,
+      default: null,
+    },
     userIdReply: {
       type: ObjectId,
       ref: "User",
@@ -39,6 +42,12 @@ const feedbackSchema = new mongoose.Schema(
 );
 
 feedbackSchema.pre(/^find/, function (next) {
+  this.populate("store").populate("user");
+
+  next();
+});
+
+feedbackSchema.pre("save", function (next) {
   this.populate("store");
 
   next();
@@ -48,6 +57,13 @@ feedbackSchema.virtual("store", {
   ref: "Store",
   foreignField: "_id",
   localField: "storeId",
+  justOne: true,
+});
+
+feedbackSchema.virtual("user", {
+  ref: "User",
+  foreignField: "_id",
+  localField: "userIdReply",
   justOne: true,
 });
 
