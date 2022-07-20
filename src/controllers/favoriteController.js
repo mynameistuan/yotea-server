@@ -1,4 +1,5 @@
 import Favorite from "../models/favoriteModel";
+import User from "../models/userModel";
 import { APIFeatutes } from "../utils/apiFeatutes";
 
 export const add = async (req, res) => {
@@ -14,6 +15,7 @@ export const add = async (req, res) => {
       status = 200;
     } else {
       favorite = await new Favorite(req.body).save();
+      favorite = await Favorite.findOne({ _id: favorite._id }).exec();
     }
 
     res.status(status).json({
@@ -101,6 +103,35 @@ export const remove = async (req, res) => {
       status: true,
       payload: {
         favorite,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: false,
+      message: error,
+    });
+  }
+};
+
+export const getMyWishList = async (req, res) => {
+  try {
+    const { email } = req.user;
+    const user = await User.findOne({ email }).exec();
+
+    if (!user) {
+      res.status(404).json({
+        status: false,
+        message: "User not found!",
+      });
+      return;
+    }
+
+    const favorites = await Favorite.find({ userId: user._id }).exec();
+
+    res.json({
+      status: true,
+      payload: {
+        favorites,
       },
     });
   } catch (error) {

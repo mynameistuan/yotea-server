@@ -27,7 +27,7 @@ export const productStats = async (req, res) => {
         },
       },
       {
-        $limit: 4,
+        $limit: +req.query.limit || +process.env.LIMIT,
       },
     ]);
 

@@ -12,8 +12,21 @@ const favoriteSchema = new mongoose.Schema(
       ref: "Product",
     },
   },
-  { timestamps: true },
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
+
+favoriteSchema.virtual("product", {
+  ref: "Product",
+  foreignField: "_id",
+  localField: "productId",
+  justOne: true,
+});
+
+favoriteSchema.pre(/^find/, function (next) {
+  this.populate("product");
+
+  next();
+});
 
 const Favorite = mongoose.model("Favorite", favoriteSchema);
 export default Favorite;
