@@ -43,5 +43,7 @@ const storeSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
+storeSchema.index({ "$**": "text" });
+
 const Store = mongoose.model("Store", storeSchema);
 export default Store;
