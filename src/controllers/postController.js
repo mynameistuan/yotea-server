@@ -104,17 +104,17 @@ export const remove = async (req, res) => {
 // sản phẩm theo danh mục
 export const getPostByCate = async (req, res) => {
   try {
-    const { categoryId } = req.params;
+    const { slug } = req.params;
 
-    const features = await new APIFeatutes(Post.find({ categoryId }), req.query)
+    const category = await CatePost.findOne({ slug }).exec();
+    const features = await new APIFeatutes(Post.find({ categoryId: category._id }), req.query)
       .filter()
       .sort()
       .limitFields()
       .paginate();
-    const postQuery = await features.query;
-    const categoryQuery = await CatePost.findOne({ _id: categoryId }).exec();
+    const posts = await features.query;
 
-    const [posts, category] = await Promise.all([postQuery, categoryQuery]);
+    // const [posts, category] = await Promise.all([postQuery, categoryQuery]);
 
     res.json({
       status: true,
