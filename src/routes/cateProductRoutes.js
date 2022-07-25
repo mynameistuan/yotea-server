@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { add, get, getAll, remove, update } from "../controllers/cateProductController";
+import { add, get, getAll, remove, update, getBySlug } from "../controllers/cateProductController";
 import { isAdmin, isAuth } from "../middlewares/auth";
 import { checkIdExits } from "../utils/checkId";
 
 const router = Router();
 
 router.get("/cateProduct", getAll);
+router.get("/cateProduct/getBySlug/:slug", getBySlug);
 router.get("/cateProduct/:id", get);
 router.post("/cateProduct", isAuth, isAdmin, add);
 router.put("/cateProduct/:id", isAuth, isAdmin, update);

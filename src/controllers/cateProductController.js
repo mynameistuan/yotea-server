@@ -45,6 +45,26 @@ export const get = async (req, res) => {
   }
 };
 
+export const getBySlug = async (req, res) => {
+  try {
+    const { slug } = req.params;
+
+    const category = await CateProduct.findOne({ slug }).exec();
+
+    res.json({
+      status: true,
+      payload: {
+        category,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: false,
+      message: error,
+    });
+  }
+};
+
 export const add = async (req, res) => {
   try {
     const category = await new CateProduct(req.body).save();
