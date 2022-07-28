@@ -1,3 +1,4 @@
+import User from "../models/userModel";
 import Voucher from "../models/voucherModel";
 import { APIFeatutes } from "../utils/apiFeatutes";
 
@@ -93,6 +94,86 @@ export const remove = async (req, res) => {
     });
   } catch (error) {
     res.status(404).json({
+      status: false,
+      message: error,
+    });
+  }
+};
+
+export const checkValid = async (req, res) => {
+  try {
+    const { code } = req.params;
+    const voucherExits = await Voucher.findOne({ code: code.trim() }).exec();
+
+    // check voucher tồn tại
+    if (!voucherExits) {
+      res.json({
+        status: false,
+        message: "Voucher không tồn tại",
+      });
+      return;
+    }
+
+    const {
+      _doc: { status, quantity, timeStart, timeEnd, userIds },
+    } = voucherExits;
+
+    // check trạng thái
+    if (!status) {
+      res.json({
+        status: false,
+        message: "Voucher đã bị khóa",
+      });
+      return;
+    }
+
+    // check số lượng
+    if (!quantity) {
+      res.json({
+        status: false,
+        message: "Voucher đã hết số lượt sử dụng",
+      });
+      return;
+    }
+
+    // check thời gian
+    const currentTime = new Date().getTime();
+    const startTime = new Date(timeStart).getTime();
+    const endTime = new Date(timeEnd).getTime();
+
+    if (currentTime < startTime) {
+      res.json({
+        status: false,
+        message: "Chưa đến thời gian sử dụng",
+      });
+      return;
+    } else if (currentTime > endTime) {
+      res.json({
+        status: false,
+        message: "Voucher đã quá thời gian sử dụng",
+      });
+      return;
+    }
+
+    // check lượt sd (chỉ được sd 1 lần
+    const userInfo = await User.findOne({ email: req.user.email }).exec();
+    const statusUsed = userIds.some((id) => id == userInfo._id);
+    if (statusUsed) {
+      res.json({
+        status: false,
+        message: "Bạn đã sử dụng Voucher này trước đó",
+      });
+      return;
+    }
+
+    res.json({
+      status: true,
+      payload: {
+        voucher: voucherExits,
+      },
+    });
+  } catch (error) {
+    res.status(400).json({
       status: false,
       message: error,
     });
