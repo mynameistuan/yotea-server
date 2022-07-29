@@ -38,8 +38,39 @@ const addressSchema = new mongoose.Schema(
     },
     message: String,
   },
-  { timestamps: true },
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
+
+addressSchema.pre(/^find/, function (next) {
+  this.populate("province").populate("district").populate("ward");
+
+  next();
+});
+
+addressSchema.virtual("province", {
+  ref: "Province",
+  foreignField: "code",
+  localField: "provinceCode",
+  justOne: true,
+});
+
+addressSchema.virtual("district", {
+  ref: "District",
+  foreignField: "code",
+  localField: "districtCode",
+  justOne: true,
+});
+
+addressSchema.virtual("ward", {
+  ref: "Ward",
+  foreignField: "code",
+  localField: "wardCode",
+  justOne: true,
+});
+
+addressSchema.virtual("fullAddress").get(function () {
+  return `${this.address}, ${this.ward.name}, ${this.district.name}, ${this.province.name}`;
+});
 
 const Address = mongoose.model("Address", addressSchema);
 export default Address;

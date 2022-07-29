@@ -40,8 +40,8 @@ export const getAll = async (req, res) => {
 
 export const get = async (req, res) => {
   try {
-    const { id: _id } = req.params;
-    const ward = await Ward.findOne({ _id }).exec();
+    const { code } = req.params;
+    const ward = await Ward.findOne({ code }).exec();
 
     res.json({
       status: true,
@@ -59,8 +59,8 @@ export const get = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    const { id } = req.params;
-    const ward = await Ward.findOneAndUpdate({ _id: id }, req.body, { new: true });
+    const { code } = req.params;
+    const ward = await Ward.findOneAndUpdate({ code }, req.body, { new: true });
 
     res.json({
       status: true,

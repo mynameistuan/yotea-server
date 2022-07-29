@@ -8,7 +8,9 @@ export const add = async (req, res) => {
     res.status(201).json({
       status: true,
       payload: {
-        order,
+        order: {
+          _id: order._id,
+        },
       },
     });
   } catch (error) {

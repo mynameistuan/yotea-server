@@ -1,15 +1,38 @@
 import Address from "../models/addressModel";
+import User from "../models/userModel";
 import { APIFeatutes } from "../utils/apiFeatutes";
 
 export const add = async (req, res) => {
   try {
-    const address = await new Address(req.body).save();
+    const { name, phone, email, provinceCode, districtCode, wardCode, message, address } = req.body;
+
+    // check address exits
+    const userInfo = await User.findOne({ email: req.user.email }).exec();
+    const filter = {
+      userId: userInfo._id,
+      name,
+      phone,
+      email,
+      provinceCode: +provinceCode,
+      districtCode: +districtCode,
+      wardCode: +wardCode,
+      message,
+      address,
+    };
+
+    const addressExits = await Address.findOne(filter).exec();
+    if (addressExits) {
+      res.json({
+        status: false,
+        message: "Địa chỉ đã tồn tại",
+      });
+      return;
+    }
+
+    await new Address(req.body).save();
 
     res.status(201).json({
       status: true,
-      payload: {
-        address,
-      },
     });
   } catch (error) {
     res.status(400).json({
@@ -89,6 +112,34 @@ export const remove = async (req, res) => {
       status: true,
       payload: {
         address,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: false,
+      message: error,
+    });
+  }
+};
+
+export const getAddressMe = async (req, res) => {
+  try {
+    const userInfo = await User.findOne({ email: req.user.email }).exec();
+    const features = await new APIFeatutes(Address.find({ userId: userInfo._id }), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
+    const addresses = await features.query;
+
+    res.json({
+      status: true,
+      payload: {
+        addresses,
+        total: features.total,
+        totalPage: Math.ceil(features.total / features.limit),
+        currentPage: features.page,
+        perPage: features.limit,
       },
     });
   } catch (error) {
