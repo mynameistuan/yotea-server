@@ -20,7 +20,8 @@
     "firebase-admin": "^11.0.0",
     "mongoose": "^6.4.3",
     "nodemailer": "^6.7.7",
-    "slugify": "^1.6.5"
+    "slugify": "^1.6.5",
+    "socket.io": "^4.5.1"
   },
   "devDependencies": {
     "morgan": "^1.10.0",

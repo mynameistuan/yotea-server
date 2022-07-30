@@ -1,4 +1,6 @@
 import express from "express";
+import { createServer } from "http";
+import { Server } from "socket.io";
 import cors from "cors";
 import morgan from "morgan";
 import { readdirSync } from "fs";
@@ -6,6 +8,24 @@ import mongoose from "mongoose";
 require("dotenv").config();
 
 const app = express();
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: "http://localhost:3000",
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("New client connected", socket.id);
+
+  socket.on("finishOrder", (data) => {
+    io.emit("newOrder", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected", socket.id);
+  });
+});
 
 // middleware
 app.use(cors());
@@ -31,4 +51,4 @@ mongoose
   .catch((err) => console.log(err));
 
 const PORT = 8080;
-app.listen(PORT, () => console.log("Server is running on port", PORT));
+httpServer.listen(PORT, () => console.log("Server is running on port", PORT));
