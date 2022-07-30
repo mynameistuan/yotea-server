@@ -1,4 +1,5 @@
 import OrderLog from "../models/orderLogModel";
+import Order from "../models/orderModel";
 import { APIFeatutes } from "../utils/apiFeatutes";
 
 export const add = async (req, res) => {
@@ -102,16 +103,16 @@ export const remove = async (req, res) => {
 export const getByOrder = async (req, res) => {
   try {
     const { id } = req.params;
-    const features = await new APIFeatutes(OrderLog.find({ orderId: id }), { ...req.query, sort: "status" })
-      .filter()
-      .sort()
-      .limitFields();
-    const orderLogs = await features.query;
+    const orderLogsQuery = await OrderLog.find({ orderId: id }).sort("status");
+    const orderQuery = await Order.findOne({ _id: id }).exec();
+
+    const [orderLogs, order] = await Promise.all([orderLogsQuery, orderQuery]);
 
     res.json({
       status: true,
       payload: {
         orderLogs,
+        order,
       },
     });
   } catch (error) {

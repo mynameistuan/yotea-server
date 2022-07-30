@@ -10,6 +10,7 @@ export const add = async (req, res) => {
       payload: {
         order: {
           _id: order._id,
+          createdAt: order.createdAt,
         },
       },
     });
