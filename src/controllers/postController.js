@@ -26,6 +26,25 @@ export const getAll = async (req, res) => {
   }
 };
 
+export const getBySlug = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const post = await Post.findOne({ slug }).exec();
+
+    res.json({
+      status: true,
+      payload: {
+        post,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: false,
+      message: error,
+    });
+  }
+};
+
 export const get = async (req, res) => {
   try {
     const { id } = req.params;
@@ -138,10 +157,10 @@ export const getPostByCate = async (req, res) => {
 // sp liên quan
 export const getRelated = async (req, res) => {
   try {
-    const { id: postId } = req.params;
-    const postData = await Post.findOne({ _id: postId }).exec();
+    const { slug } = req.params;
+    const postData = await Post.findOne({ slug }).exec();
     const features = await new APIFeatutes(
-      Post.find({ categoryId: postData.categoryId, _id: { $ne: postId } }),
+      Post.find({ categoryId: postData.categoryId, slug: { $ne: slug } }),
       req.query,
     )
       .filter()

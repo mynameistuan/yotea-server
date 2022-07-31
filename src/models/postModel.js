@@ -25,6 +25,11 @@ const postSchema = new mongoose.Schema(
       type: ObjectId,
       ref: "CatePost",
     },
+    userId: {
+      type: ObjectId,
+      ref: "User",
+      required: true,
+    },
     slug: String,
     status: {
       type: Number,
@@ -55,8 +60,15 @@ postSchema.virtual("category", {
   justOne: true,
 });
 
+postSchema.virtual("author", {
+  ref: "User",
+  foreignField: "_id",
+  localField: "userId",
+  justOne: true,
+});
+
 postSchema.pre(/^find/, function (next) {
-  this.populate("category");
+  this.populate("category").populate("author");
   next();
 });
 
