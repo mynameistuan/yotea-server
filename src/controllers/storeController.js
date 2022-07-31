@@ -74,7 +74,8 @@ export const update = async (req, res) => {
   try {
     const { id } = req.params;
     // website chỉ có 1 địa chỉ trên header - footer
-    if (req.body.currentStore) {
+    const currentStore = await Store.findOne({ currentStore: true }).exec();
+    if (currentStore && req.body.currentStore) {
       return res.status(400).json({
         status: false,
         message: "Đã tồn tại địa chỉ",
@@ -101,6 +102,24 @@ export const remove = async (req, res) => {
   try {
     const { id: _id } = req.params;
     const store = await Store.findOneAndDelete({ _id }).exec();
+
+    res.json({
+      status: true,
+      payload: {
+        store,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: false,
+      message: error,
+    });
+  }
+};
+
+export const getCurrentStore = async (req, res) => {
+  try {
+    const store = await Store.findOne({ currentStore: true }).exec();
 
     res.json({
       status: true,
