@@ -8,6 +8,7 @@ import {
   getProductByCate,
   getRelated,
   getBySlug,
+  getTop10Product,
 } from "../controllers/productController";
 import { isAdmin, isAuth } from "../middlewares/auth";
 import { checkIdExits } from "../utils/checkId";
@@ -15,6 +16,7 @@ import { checkIdExits } from "../utils/checkId";
 const router = Router();
 
 router.get("/products", getAll);
+router.get("/products/top10Wishlist", getTop10Product);
 router.get("/products/:id", get);
 router.get("/products/getBySlug/:slug", getBySlug);
 router.get("/products/getByCate/:categoryId", getProductByCate);

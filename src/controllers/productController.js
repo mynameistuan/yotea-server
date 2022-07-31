@@ -187,3 +187,22 @@ export const getRelated = async (req, res) => {
     });
   }
 };
+
+export const getTop10Product = async (req, res) => {
+  try {
+    const top = +req.query.top || 10;
+    const products = await Product.find().limit(top).sort("-favorites").exec();
+
+    res.json({
+      status: true,
+      payload: {
+        products,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: false,
+      message: error,
+    });
+  }
+};

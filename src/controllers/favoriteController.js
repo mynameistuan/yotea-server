@@ -1,4 +1,5 @@
 import Favorite from "../models/favoriteModel";
+import Product from "../models/productModel";
 import User from "../models/userModel";
 import { APIFeatutes } from "../utils/apiFeatutes";
 
@@ -12,10 +13,17 @@ export const add = async (req, res) => {
     const isFavorite = await Favorite.findOne({ userId, productId }).exec();
     if (isFavorite) {
       favorite = await Favorite.findOneAndDelete({ userId, productId }).exec();
+
+      const { _doc } = await Product.findById(productId).exec();
+      if (_doc.favorites > 0) {
+        await Product.findOneAndUpdate({ _id: productId }, { ..._doc, favorites: _doc.favorites - 1 }).exec();
+      }
       status = 200;
     } else {
       favorite = await new Favorite(req.body).save();
       favorite = await Favorite.findOne({ _id: favorite._id }).exec();
+      const { _doc } = await Product.findById(productId).exec();
+      await Product.findOneAndUpdate({ _id: productId }, { ..._doc, favorites: _doc.favorites + 1 }).exec();
     }
 
     res.status(status).json({
