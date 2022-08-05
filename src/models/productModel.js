@@ -56,8 +56,24 @@ productSchema.virtual("category", {
   justOne: true,
 });
 
+productSchema.virtual("rating", {
+  ref: "Rating",
+  foreignField: "productId",
+  localField: "_id",
+});
+
+productSchema.virtual("ratingAvg").get(function () {
+  let ratingAvg = this.rating.reduce((result, rating) => {
+    return result + rating.ratingNumber;
+  }, 0);
+
+  ratingAvg = Math.ceil(ratingAvg / this.rating.length) || 0;
+
+  return ratingAvg;
+});
+
 productSchema.pre(/^find/, function (next) {
-  this.populate("category");
+  this.populate("category").populate("rating");
   next();
 });
 
