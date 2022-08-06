@@ -62,6 +62,12 @@ productSchema.virtual("rating", {
   localField: "_id",
 });
 
+productSchema.virtual("wishlist", {
+  ref: "Favorite",
+  foreignField: "productId",
+  localField: "_id",
+});
+
 productSchema.virtual("ratingAvg").get(function () {
   let ratingAvg = this.rating.reduce((result, rating) => {
     return result + rating.ratingNumber;
@@ -73,7 +79,7 @@ productSchema.virtual("ratingAvg").get(function () {
 });
 
 productSchema.pre(/^find/, function (next) {
-  this.populate("category").populate("rating");
+  this.populate("category").populate("rating").populate("wishlist");
   next();
 });
 

@@ -21,7 +21,7 @@ export const add = async (req, res) => {
       status = 200;
     } else {
       favorite = await new Favorite(req.body).save();
-      favorite = await Favorite.findOne({ _id: favorite._id }).exec();
+      favorite = await Favorite.findOne({ _id: favorite._id }).populate("product").exec();
       const { _doc } = await Product.findById(productId).exec();
       await Product.findOneAndUpdate({ _id: productId }, { ..._doc, favorites: _doc.favorites + 1 }).exec();
     }
@@ -134,7 +134,7 @@ export const getMyWishList = async (req, res) => {
       return;
     }
 
-    const favorites = await Favorite.find({ userId: user._id }).exec();
+    const favorites = await Favorite.find({ userId: user._id }).populate("product").exec();
 
     res.json({
       status: true,

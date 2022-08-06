@@ -22,11 +22,11 @@ favoriteSchema.virtual("product", {
   justOne: true,
 });
 
-favoriteSchema.pre(/^find/, function (next) {
-  this.populate("product");
+// favoriteSchema.pre(/^find/, function (next) {
+//   this.populate("product");
 
-  next();
-});
+//   next();
+// });
 
 const Favorite = mongoose.model("Favorite", favoriteSchema);
 export default Favorite;
