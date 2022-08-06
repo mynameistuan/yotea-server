@@ -1,4 +1,5 @@
 import Order from "../models/orderModel";
+import User from "../models/userModel";
 import { APIFeatutes } from "../utils/apiFeatutes";
 
 export const add = async (req, res) => {
@@ -92,6 +93,35 @@ export const remove = async (req, res) => {
       status: true,
       payload: {
         order,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: false,
+      message: error,
+    });
+  }
+};
+
+export const getMyOrders = async (req, res) => {
+  try {
+    const { email } = req.user;
+    const userExits = await User.findOne({ email }).exec();
+    const features = await new APIFeatutes(Order.find({ userId: userExits._id }), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
+    const orders = await features.query;
+
+    res.json({
+      status: true,
+      payload: {
+        orders,
+        total: features.total,
+        totalPage: Math.ceil(features.total / features.limit),
+        currentPage: features.page,
+        perPage: features.limit,
       },
     });
   } catch (error) {

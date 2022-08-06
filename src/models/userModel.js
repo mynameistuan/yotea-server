@@ -11,7 +11,10 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    phone: String,
+    phone: {
+      type: String,
+      default: "",
+    },
     avatar: {
       type: String,
       default: process.env.DEFAULT_AVATAR,
