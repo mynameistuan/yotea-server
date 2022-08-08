@@ -143,3 +143,55 @@ export const moneyStats = async (req, res) => {
     });
   }
 };
+
+// thống kê số đơn hàng theo trạng thái
+export const orderStats = async (req, res) => {
+  try {
+    const stats = await Order.aggregate([
+      {
+        $group: {
+          _id: "$status",
+          total: {
+            $sum: 1,
+          },
+        },
+      },
+      {
+        $addFields: {
+          status: "$_id",
+          statusText: {
+            $switch: {
+              branches: [
+                { case: { $eq: ["$_id", 0] }, then: "Đơn hàng mới" },
+                { case: { $eq: ["$_id", 1] }, then: "Đã xác nhận" },
+                { case: { $eq: ["$_id", 2] }, then: "Đang giao hàng" },
+                { case: { $eq: ["$_id", 3] }, then: "Đã giao hàng" },
+              ],
+              default: "Đã hủy",
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+        },
+      },
+      {
+        $sort: { status: 1 },
+      },
+    ]);
+
+    res.json({
+      status: true,
+      payload: {
+        stats,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: false,
+      message: error,
+    });
+  }
+};
