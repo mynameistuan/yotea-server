@@ -54,6 +54,7 @@ export class APIFeatutes {
 
     const totalResult = await this.query.clone();
     this.total = totalResult.length;
+    if (+this.queryString.limit === 0) this.limit = this.total;
     if (this.queryString.page && skip >= this.total) {
       return res.status(404).json({
         status: false,
