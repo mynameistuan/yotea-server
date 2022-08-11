@@ -50,5 +50,5 @@ mongoose
   .then(() => console.log("Connect successfully"))
   .catch((err) => console.log(err));
 
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 httpServer.listen(PORT, () => console.log("Server is running on port", PORT));
