@@ -46,7 +46,7 @@ app.all("*", (req, res, next) => {
 
 // connect
 mongoose
-  .connect("mongodb://localhost:27017/yotea")
+  .connect(process.env.DB_URL)
   .then(() => console.log("Connect successfully"))
   .catch((err) => console.log(err));
 
