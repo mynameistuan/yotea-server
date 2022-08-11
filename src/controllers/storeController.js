@@ -75,7 +75,7 @@ export const update = async (req, res) => {
     const { id } = req.params;
     // website chỉ có 1 địa chỉ trên header - footer
     const currentStore = await Store.findOne({ currentStore: true }).exec();
-    if (currentStore && req.body.currentStore) {
+    if (currentStore && req.body.currentStore && currentStore._id != req.body._id) {
       return res.status(400).json({
         status: false,
         message: "Đã tồn tại địa chỉ",
