@@ -80,6 +80,32 @@ export const update = async (req, res) => {
   }
 };
 
+export const updateProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userExits = await User.findById(id);
+    if (req.user.email !== userExits.email) {
+      return res.status(403).json({
+        status: false,
+        message: "Bạn không có quyền!",
+      });
+    }
+
+    const user = await User.findOneAndUpdate({ _id: id }, req.body, { new: true });
+    res.json({
+      status: true,
+      payload: {
+        user,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: false,
+      message: error,
+    });
+  }
+};
+
 export const remove = async (req, res) => {
   try {
     const { id: _id } = req.params;
